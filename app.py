@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 import sqlite3
-
+import os
+from dotenv import load_dotenv  
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
+DATABASE_URL = os.getenv("DATABASE_URL")
 app = Flask(__name__)
 
 def init_db():
