@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بحث عن الطالب</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+        }
+        form {
+            margin: 20px auto;
+        }
+        input {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>بحث عن الطالب</h1>
+    <form id="search-form">
+        <input type="text" id="first-name" placeholder="أدخل الاسم" required>
+        <input type="text" id="last-name" placeholder="أدخل اللقب" required>
+        <button type="submit">بحث</button>
+    </form>
+    <div class="result" id="result"></div>
+
+    <script>
+        const form = document.getElementById('search-form');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+
+            fetch(`http://127.0.0.1:5000/search_student?first_name=${encodeURIComponent(firstName)}&last_name=${encodeURIComponent(lastName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        resultDiv.textContent = data.message;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <p><strong>الاسم:</strong> ${data.first_name}</p>
+                            <p><strong>اللقب:</strong> ${data.last_name}</p>
+                            <p><strong>القسم:</strong> ${data.class}</p>
+                            <p><strong>المعدل:</strong> ${data.average}</p>
+                            <p><strong>الملاحظات:</strong> ${data.notes}</p>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    resultDiv.textContent = 'حدث خطأ أثناء البحث.';
+                });
+        });
+    </script>
+</body>
+</html>
+    

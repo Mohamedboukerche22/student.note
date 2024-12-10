@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> ثانوية محمد بوضياف فرع إدارة نقاط التلاميذ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+        }
+        form {
+            margin: 20px auto;
+        }
+        input, textarea {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>إدارة التلاميذ</h1>
+    <form id="add-student-form">
+        <input type="text" id="first-name" placeholder="الاسم" required>
+        <input type="text" id="last-name" placeholder="اللقب" required>
+        <input type="text" id="class" placeholder="القسم" required>
+        <input type="number" id="average" placeholder="المعدل" required>
+        <textarea id="notes" placeholder="الملاحظات"></textarea>
+        <button type="submit">إضافة الطالب</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('add-student-form');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const studentData = {
+                first_name: document.getElementById('first-name').value,
+                last_name: document.getElementById('last-name').value,
+                class: document.getElementById('class').value,
+                average: parseFloat(document.getElementById('average').value),
+                notes: document.getElementById('notes').value
+            };
+
+            fetch('http://127.0.0.1:5000/add_student', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(studentData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    resultDiv.textContent = data.message;
+                })
+                .catch(error => {
+                    resultDiv.textContent = 'حدث خطأ أثناء الإضافة.';
+                });
+        });
+    </script>
+</body>
+</html>
