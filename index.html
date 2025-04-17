@@ -40,6 +40,16 @@
     <form id="search-form">
         <input type="text" id="first-name" placeholder="أدخل الاسم" required>
         <input type="text" id="last-name" placeholder="أدخل اللقب" required>
+               <div class="next">
+            <button class="next-button" onclick="goNext()" style="margin-top: 20px;">NEXT</button>
+        </div>
+    </div>
+
+    <script>
+        function goNext() {
+            window.location.href = "admin.html"; 
+        }
+    </script>
         <button type="submit">بحث</button>
     </form>
     <div class="result" id="result"></div>
